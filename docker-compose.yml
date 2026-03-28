@@ -12,3 +12,5 @@ services:
     restart: unless-stopped
     volumes:
       - ./backend/uploads:/app/backend/uploads
+      - ./frontend/src:/app/frontend/src
+      - ./backend:/app/backend

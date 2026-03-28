@@ -1,6 +1,6 @@
 """
-任务状态管理
-用于跟踪长时间运行的任务（如图谱构建）
+작업 상태 관리
+장시간 실행 작업(예: 그래프 구축) 추적용
 """
 
 import uuid
@@ -12,30 +12,30 @@ from dataclasses import dataclass, field
 
 
 class TaskStatus(str, Enum):
-    """任务状态枚举"""
-    PENDING = "pending"          # 等待中
-    PROCESSING = "processing"    # 处理中
-    COMPLETED = "completed"      # 已完成
-    FAILED = "failed"            # 失败
+    """작업 상태 열거형"""
+    PENDING = "pending"          # 대기 중
+    PROCESSING = "processing"    # 처리 중
+    COMPLETED = "completed"      # 완료
+    FAILED = "failed"            # 실패
 
 
 @dataclass
 class Task:
-    """任务数据类"""
+    """작업 데이터 클래스"""
     task_id: str
     task_type: str
     status: TaskStatus
     created_at: datetime
     updated_at: datetime
-    progress: int = 0              # 总进度百分比 0-100
-    message: str = ""              # 状态消息
-    result: Optional[Dict] = None  # 任务结果
-    error: Optional[str] = None    # 错误信息
-    metadata: Dict = field(default_factory=dict)  # 额外元数据
-    progress_detail: Dict = field(default_factory=dict)  # 详细进度信息
-    
+    progress: int = 0              # 전체 진행률 0-100
+    message: str = ""              # 상태 메시지
+    result: Optional[Dict] = None  # 작업 결과
+    error: Optional[str] = None    # 오류 정보
+    metadata: Dict = field(default_factory=dict)  # 추가 메타데이터
+    progress_detail: Dict = field(default_factory=dict)  # 상세 진행 정보
+
     def to_dict(self) -> Dict[str, Any]:
-        """转换为字典"""
+        """딕셔너리로 변환"""
         return {
             "task_id": self.task_id,
             "task_type": self.task_type,
@@ -53,15 +53,15 @@ class Task:
 
 class TaskManager:
     """
-    任务管理器
-    线程安全的任务状态管理
+    작업 매니저
+    스레드 안전한 작업 상태 관리
     """
-    
+
     _instance = None
     _lock = threading.Lock()
-    
+
     def __new__(cls):
-        """单例模式"""
+        """싱글턴 패턴"""
         if cls._instance is None:
             with cls._lock:
                 if cls._instance is None:
@@ -69,21 +69,21 @@ class TaskManager:
                     cls._instance._tasks: Dict[str, Task] = {}
                     cls._instance._task_lock = threading.Lock()
         return cls._instance
-    
+
     def create_task(self, task_type: str, metadata: Optional[Dict] = None) -> str:
         """
-        创建新任务
-        
+        새 작업 생성
+
         Args:
-            task_type: 任务类型
-            metadata: 额外元数据
-            
+            task_type: 작업 유형
+            metadata: 추가 메타데이터
+
         Returns:
-            任务ID
+            작업 ID
         """
         task_id = str(uuid.uuid4())
         now = datetime.now()
-        
+
         task = Task(
             task_id=task_id,
             task_type=task_type,
@@ -92,17 +92,17 @@ class TaskManager:
             updated_at=now,
             metadata=metadata or {}
         )
-        
+
         with self._task_lock:
             self._tasks[task_id] = task
-        
+
         return task_id
-    
+
     def get_task(self, task_id: str) -> Optional[Task]:
-        """获取任务"""
+        """작업 가져오기"""
         with self._task_lock:
             return self._tasks.get(task_id)
-    
+
     def update_task(
         self,
         task_id: str,
@@ -114,16 +114,16 @@ class TaskManager:
         progress_detail: Optional[Dict] = None
     ):
         """
-        更新任务状态
-        
+        작업 상태 업데이트
+
         Args:
-            task_id: 任务ID
-            status: 新状态
-            progress: 进度
-            message: 消息
-            result: 结果
-            error: 错误信息
-            progress_detail: 详细进度信息
+            task_id: 작업 ID
+            status: 새 상태
+            progress: 진행률
+            message: 메시지
+            result: 결과
+            error: 오류 정보
+            progress_detail: 상세 진행 정보
         """
         with self._task_lock:
             task = self._tasks.get(task_id)
@@ -141,39 +141,39 @@ class TaskManager:
                     task.error = error
                 if progress_detail is not None:
                     task.progress_detail = progress_detail
-    
+
     def complete_task(self, task_id: str, result: Dict):
-        """标记任务完成"""
+        """작업 완료 표시"""
         self.update_task(
             task_id,
             status=TaskStatus.COMPLETED,
             progress=100,
-            message="任务完成",
+            message="작업 완료",
             result=result
         )
-    
+
     def fail_task(self, task_id: str, error: str):
-        """标记任务失败"""
+        """작업 실패 표시"""
         self.update_task(
             task_id,
             status=TaskStatus.FAILED,
-            message="任务失败",
+            message="작업 실패",
             error=error
         )
-    
+
     def list_tasks(self, task_type: Optional[str] = None) -> list:
-        """列出任务"""
+        """작업 목록 조회"""
         with self._task_lock:
             tasks = list(self._tasks.values())
             if task_type:
                 tasks = [t for t in tasks if t.task_type == task_type]
             return [t.to_dict() for t in sorted(tasks, key=lambda x: x.created_at, reverse=True)]
-    
+
     def cleanup_old_tasks(self, max_age_hours: int = 24):
-        """清理旧任务"""
+        """오래된 작업 정리"""
         from datetime import timedelta
         cutoff = datetime.now() - timedelta(hours=max_age_hours)
-        
+
         with self._task_lock:
             old_ids = [
                 tid for tid, task in self._tasks.items()
@@ -181,4 +181,3 @@ class TaskManager:
             ]
             for tid in old_ids:
                 del self._tasks[tid]
-
