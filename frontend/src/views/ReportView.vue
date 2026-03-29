@@ -219,7 +219,7 @@ onMounted(() => {
   flex-direction: column;
   background: #FFF;
   overflow: hidden;
-  font-family: 'Space Grotesk', 'Noto Sans SC', system-ui, sans-serif;
+  font-family: 'Space Grotesk', 'Noto Sans KR', system-ui, sans-serif;
 }
 
 /* Header */
@@ -260,13 +260,14 @@ onMounted(() => {
 .switch-btn {
   border: none;
   background: transparent;
-  padding: 6px 16px;
+  padding: 6px 20px;
   font-size: 12px;
   font-weight: 600;
   color: #666;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .switch-btn.active {
@@ -297,6 +298,7 @@ onMounted(() => {
 .step-name {
   font-weight: 700;
   color: #000;
+  white-space: nowrap;
 }
 
 .step-divider {

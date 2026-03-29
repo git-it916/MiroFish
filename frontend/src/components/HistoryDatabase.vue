@@ -644,11 +644,10 @@ onUnmounted(() => {
 }
 
 .section-title {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 500;
   color: #9CA3AF;
-  letter-spacing: 3px;
-  text-transform: uppercase;
+  letter-spacing: 0.15em;
 }
 
 /* 카드 컨테이너 */
@@ -1150,8 +1149,7 @@ onUnmounted(() => {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.75rem;
   color: #6B7280;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.05em;
   margin-bottom: 10px;
   font-weight: 500;
 }
@@ -1248,8 +1246,7 @@ onUnmounted(() => {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.7rem;
   color: #9CA3AF;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  letter-spacing: 0.1em;
   white-space: nowrap;
 }
 

@@ -319,8 +319,8 @@ const startSimulation = () => {
     index.html에서 이 Google Fonts를 불러왔는지 확인하세요
   */
   --font-mono: 'JetBrains Mono', monospace;
-  --font-sans: 'Space Grotesk', 'Noto Sans SC', system-ui, sans-serif;
-  --font-cn: 'Noto Sans SC', system-ui, sans-serif;
+  --font-sans: 'Space Grotesk', 'Noto Sans KR', system-ui, sans-serif;
+  --font-ko: 'Noto Sans KR', system-ui, sans-serif;
 }
 
 .home-container {
@@ -405,25 +405,26 @@ const startSimulation = () => {
 .orange-tag {
   background: var(--orange);
   color: var(--white);
-  padding: 4px 10px;
+  padding: 4px 12px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.02em;
   font-size: 0.75rem;
 }
 
 .version-text {
   color: #999;
   font-weight: 500;
-  letter-spacing: 0.5px;
+  letter-spacing: 0;
 }
 
 .main-title {
-  font-size: 4.5rem;
-  line-height: 1.2;
+  font-size: 3.8rem;
+  line-height: 1.25;
   font-weight: 500;
   margin: 0 0 40px 0;
-  letter-spacing: -2px;
+  letter-spacing: -0.02em;
   color: var(--black);
+  word-break: keep-all;
 }
 
 .gradient-text {
@@ -441,6 +442,7 @@ const startSimulation = () => {
   margin-bottom: 50px;
   font-weight: 400;
   text-align: justify;
+  word-break: keep-all;
 }
 
 .hero-desc p {
@@ -469,13 +471,14 @@ const startSimulation = () => {
 }
 
 .slogan-text {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 520;
   color: var(--black);
-  letter-spacing: 1px;
+  letter-spacing: 0;
   border-left: 3px solid var(--orange);
   padding-left: 15px;
   margin-top: 20px;
+  word-break: keep-all;
 }
 
 .blinking-cursor {
@@ -578,6 +581,7 @@ const startSimulation = () => {
   color: var(--gray-text);
   margin-bottom: 25px;
   line-height: 1.6;
+  word-break: keep-all;
 }
 
 .metrics-row {
@@ -658,6 +662,7 @@ const startSimulation = () => {
 .step-desc {
   font-size: 0.85rem;
   color: var(--gray-text);
+  word-break: keep-all;
 }
 
 /* 오른쪽 인터랙티브 콘솔 */
@@ -785,7 +790,7 @@ const startSimulation = () => {
   font-family: var(--font-mono);
   font-size: 0.7rem;
   color: #BBB;
-  letter-spacing: 1px;
+  letter-spacing: 0.05em;
 }
 
 .input-wrapper {
@@ -830,7 +835,7 @@ const startSimulation = () => {
   align-items: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  letter-spacing: 1px;
+  letter-spacing: 0.02em;
   position: relative;
   overflow: hidden;
 }
@@ -868,23 +873,37 @@ const startSimulation = () => {
 }
 
 /* 반응형 적응 */
+@media (max-width: 1200px) {
+  .main-title {
+    font-size: 3rem;
+  }
+
+  .dashboard-section {
+    gap: 40px;
+  }
+}
+
 @media (max-width: 1024px) {
   .dashboard-section {
     flex-direction: column;
   }
-  
+
   .hero-section {
     flex-direction: column;
   }
-  
+
   .hero-left {
     padding-right: 0;
     margin-bottom: 40px;
   }
-  
+
   .hero-logo {
     max-width: 200px;
     margin-bottom: 20px;
+  }
+
+  .main-title {
+    font-size: 2.5rem;
   }
 }
 </style>
